@@ -1,5 +1,6 @@
 package com.dmitry.nytimes.ui.adapters;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +10,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.dmitry.nytimes.R;
 import com.dmitry.nytimes.models.Title;
-
+import com.dmitry.nytimes.ui.activity.ActivityWevPage;
 import java.util.ArrayList;
 
 public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
@@ -37,7 +38,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println(urlCurrentArticle);
+                openWebPage(urlCurrentArticle);
             }
         });
     }
@@ -45,6 +46,12 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
     @Override
     public int getItemCount() {
         return resultTitles.size();
+    }
+
+    private void openWebPage(String url){
+        Intent intent = new Intent(view.getContext(), ActivityWevPage.class);
+        intent.putExtra("URL", url);
+        view.getContext().startActivity(intent);
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
