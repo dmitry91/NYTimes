@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">NYTimes</string>
+    <string name="conn_error">Check your internet connection</string>
 </resources>
