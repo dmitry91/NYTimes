@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import com.dmitry.nytimes.R;
 import com.dmitry.nytimes.models.ResultTitle;
@@ -24,6 +25,7 @@ public class FragmentListEmailed extends Fragment {
     private RecyclerView recyclerView;
     private ArrayList<Title> data;
     private DataAdapter adapter;
+    private ProgressBar simpleProgressBar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,6 +53,8 @@ public class FragmentListEmailed extends Fragment {
     }
 
     private void request(){
+        simpleProgressBar = getActivity().findViewById(R.id.mainProgressBar);
+        simpleProgressBar.setVisibility(View.VISIBLE);
         Call<ResultTitle> mCall = RetrofitService.getInstance().getMostEmailed();
         mCall.enqueue(new Callback<ResultTitle>() {
             @Override
@@ -59,9 +63,11 @@ public class FragmentListEmailed extends Fragment {
                 data = (ArrayList<Title>) response.body().getResult();
                 adapter = new DataAdapter(data);
                 recyclerView.setAdapter(adapter);
+                simpleProgressBar.setVisibility(View.INVISIBLE);
             }
             @Override
             public void onFailure(Call<ResultTitle> call, Throwable t) {
+                simpleProgressBar.setVisibility(View.INVISIBLE);
                 Toast.makeText(getActivity(), R.string.conn_error, Toast.LENGTH_LONG).show();
             }
         });
