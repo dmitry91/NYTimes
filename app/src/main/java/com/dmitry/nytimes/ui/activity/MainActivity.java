@@ -10,8 +10,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ProgressBar;
 import com.dmitry.nytimes.R;
+import com.dmitry.nytimes.db.App;
+import com.dmitry.nytimes.db.AppDatabase;
 import com.dmitry.nytimes.ui.adapters.ViewPagerAdapter;
 import com.dmitry.nytimes.ui.fragments.FragmentListEmailed;
+import com.dmitry.nytimes.ui.fragments.FragmentListSaved;
 import com.dmitry.nytimes.ui.fragments.FragmentListShared;
 import com.dmitry.nytimes.ui.fragments.FragmentListViewed;
 
@@ -50,7 +53,8 @@ public class MainActivity extends AppCompatActivity {
         Fragment Viewed = new FragmentListViewed();
         adapter.addFragment(Viewed, "Most Viewed");
 
-//        adapter.addFragment(Saved, "Saved");
+        Fragment Saved = new FragmentListSaved();
+        adapter.addFragment(Saved, "Saved");
         viewPager.setAdapter(adapter);
     }
 
