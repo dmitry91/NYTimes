@@ -3,8 +3,7 @@ package com.dmitry.nytimes.models
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
-class Media:Serializable {
-
+class Media{
     @SerializedName("media-metadata")
     var mediaMedia:List<MediaMetadata>?=null;
     //for parse url images article title

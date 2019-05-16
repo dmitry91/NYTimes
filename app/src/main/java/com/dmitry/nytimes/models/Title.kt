@@ -3,7 +3,7 @@ package com.dmitry.nytimes.models
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
-class Title:Serializable {
+class Title{
 
     @SerializedName("url")
     var url:String?=null;

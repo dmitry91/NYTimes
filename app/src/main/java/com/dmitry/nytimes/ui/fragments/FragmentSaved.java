@@ -9,22 +9,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import com.dmitry.nytimes.R;
-import com.dmitry.nytimes.db.App;
-import com.dmitry.nytimes.db.AppDatabase;
 import com.dmitry.nytimes.db.TitleEntity;
+import com.dmitry.nytimes.presenter.SavedPresenter;
 import com.dmitry.nytimes.ui.adapters.SavedDataAdapter;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import net.vrgsoft.layoutmanager.RollingLayoutManager;
 
 import java.util.ArrayList;
 
-public class FragmentListSaved extends Fragment {
+public class FragmentSaved extends Fragment {
 
     private RecyclerView recyclerView;
-    private ArrayList<TitleEntity> data;
-    private SavedDataAdapter adapter;
     private ProgressBar simpleProgressBar;
-    private AppDatabase db = App.getInstance().getDatabase();
+    SavedPresenter savedPresenter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,6 +40,7 @@ public class FragmentListSaved extends Fragment {
     }
 
     private void initViews() {
+        simpleProgressBar = getActivity().findViewById(R.id.mainProgressBar);
         recyclerView = getActivity().findViewById(R.id.card_recycler_view_saved);
         recyclerView.setHasFixedSize(true);
         RollingLayoutManager rollingLayoutManager = new RollingLayoutManager(getActivity());
@@ -53,15 +50,23 @@ public class FragmentListSaved extends Fragment {
 
     @SuppressLint("CheckResult")
     private void loadFromDB(){
-        simpleProgressBar = getActivity().findViewById(R.id.mainProgressBar);
         simpleProgressBar.setVisibility(View.VISIBLE);
-        db.titleDao().getAllData()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(titleEntities -> {
-                    data = (ArrayList<TitleEntity>) titleEntities;
-                    adapter = new SavedDataAdapter(data);
-                    recyclerView.setAdapter(adapter);
-                    simpleProgressBar.setVisibility(View.INVISIBLE);
-                });
+        savedPresenter = new SavedPresenter(this);
+        savedPresenter.getSaved();
+    }
+
+    public void setData(ArrayList<TitleEntity> titles) {
+        SavedDataAdapter adapter = new SavedDataAdapter(titles);
+        recyclerView.setAdapter(adapter);
+    }
+
+    public void invisibleProgressBar(){
+        simpleProgressBar.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        savedPresenter.destroy();
     }
 }

@@ -6,13 +6,13 @@ import retrofit2.http.GET;
 
 public interface API {
 
-    @GET("mostemailed/all-sections/30")
+    @GET("emailed/30")
     Call<ResultTitle> getMostEmailed();
 
-    @GET("mostshared/all-sections/30")
+    @GET("shared/30")
     Call<ResultTitle> getMostShared();
 
-    @GET("mostviewed/all-sections/30")
+    @GET("viewed/30")
     Call<ResultTitle> getMostViewed();
 
 }
